@@ -1,0 +1,220 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/XiaoNiu/Views/Shared/_CommonPage.cshtml";
+}
+<link href="~/Content/Master/CSS/index_body.css" rel="stylesheet" /> @*首页下面4张图片的样式*@
+<link href="~/Content/Master/CSS/TestImg.css" rel="stylesheet" />
+
+<style>
+    #slid-1-t {
+        position: absolute;
+        right: 5%;
+        width: 350px;
+        top: 35%;
+        color: #6e6e6e;
+    }
+
+        #slid-1-t > img {
+            width: 81%;
+        }
+
+        #slid-1-t > p {
+            line-height: 30px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+    #no {
+        position: absolute;
+        top: 45%;
+        color: #fff;
+        text-align: left;
+        left: 36%;
+        margin-left: -180px;
+    }
+</style>
+
+
+<div class="kv-slider" style="margin: 0; padding: 0;position: relative;">
+    <div class="slider kv-slider-horizontal" style="position: relative; overflow: hidden;height:753px;">
+        <ul class="kv-slider-wrap kv-slider-carousel" style="width: 600%; margin-left: -100%; left: 0%; ">
+
+            @*100%*@
+            <li class="gridBox-link kv3" style="width: 16.6667%;" aa="0" bb="shopStore-kv-active">
+                <div class="slidItem">
+                    <div class="slidItem-content slid2-t">
+                        <img src="//www.niucache.com/static/common/widget/slider/slider/0821-1_e846c2d1.png">
+                        <a href="javascript:;" class="slidLinkBtn gridBox-link">了解更多<i class="icon-right"></i></a>
+                    </div>
+                </div>
+            </li>
+
+            @*0%*@
+            <li class="gridBox-link kv1" style="width: 16.6667%;" aa="1" bb="shopStore-kv-active">
+                <div class="slidItem">
+                    <div class="slidItem-content slid1-t" id="no">
+                        <p class="slid1-t-1">不露声色，却抢尽风头</p>
+                        <p class="slid1-t-2">小牛电动 N1S PRO 天猫全球首发</p>
+                        <a href="javascript:;" class="slidLinkBtn gridBox-link slid1-t1">了解详情<i class="icon-right"></i></a>
+                    </div>
+                </div>
+            </li>
+
+            @*-100% *@
+            <li class="gridBox-link kv-1" style="width: 16.6667%;" aa="2" bb="shopStore-kv-active">
+                <div class="slidItem-content slid-1-t" id="slid-1-t">
+                    <img src="//www.niucache.com/static/common/widget/slider/slider/KV1N1S0825-1_27198195.png">
+                    <p class="slid-1-t2">140 公里超长续航 ／ 智能 APP 防盗 ／ 丢一台赔一台</p>
+                    <div class="slid1-t-3">
+                        <a href="javascript:;" class="slidLinkBtn gridBox-link slid-1-t4" data-type="link" data-target="https://store.niu.com/n1s">了解N1S<i class="icon-right"></i></a>
+                        <a href="javascript:;" class="slidLinkBtn gridBox-link slid-1-t5" data-type="link" data-target="https://store.niu.com/buy/n1s">立即购买<i class="icon-right"></i></a>
+                    </div>
+                </div>
+            </li>
+
+
+        </ul>
+    </div>
+    <nav class="kv-slider-nav" style="position: absolute;bottom: 30px;width: 100%;text-align: center;">
+        <ol>
+            <li data-slide="0" class="kv-slider-active" id="one"></li>
+            <li data-slide="1" class="" id="two"></li>
+            <li data-slide="2" class="" id="three"></li>
+        </ol>
+    </nav>
+</div>
+
+
+
+<section class="gridBox">
+    <ul>
+        <li>
+            <a class="gridBox-link" href="javascript:;" data-type="link" data-target="https://store.niu.com/m1/">
+                <div class="gridBoxItem gridBoxItem1"></div>
+                <h3>小牛电动M1 产品详情</h3>
+                <p>了解小牛电动M1出色的设计与全新科技</p>
+            </a>
+        </li>
+        <li>
+            <a class="gridBox-link" href="javascript:;" data-type="link" data-target="http://bbs.niu.com/thread-81607-1-1.html">
+                <div class="gridBoxItem gridBoxItem2"></div>
+                <h3>最全的小牛日常保养技巧</h3>
+                <p>让你的爱车清凉一夏</p>
+            </a>
+        </li>
+        <li>
+            <a class="gridBox-link" href="javascript:;" data-type="link" data-target="https://store.niu.com">
+                <div class="gridBoxItem gridBoxItem3"></div>
+                <h3>官方商城 配件上新</h3>
+                <p>满499元免运费</p>
+            </a>
+        </li>
+        <li id="test">
+            <a class="gridBox-link" href="javascript:;" data-type="link" data-target="http://bbs.niu.com/thread-91776-1-1.html">
+                <div class="gridBoxItem gridBoxItem4"></div>
+                <h3>【活动】DIY头盔大赛</h3>
+                <p>晒DIY头盔赢NIU骑行手套</p>
+            </a>
+        </li>
+    </ul>
+</section>
+<div class="video-mask hide"></div>
+<div class="video-content hide">
+    <embed class="video-content-embed" src="" quality="high" width="1140" height="640" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash"></embed>
+    <span class="icon-cross video-content-close"></span>
+</div>
+
+
+
+<script>
+    var mm;
+    function hh() {
+        $("ul.kv-slider-carousel").animate({ "left": "-100%" }, 2000, function () {
+            $("ol li").attr("class", "");//把ol li 的样式移除
+            $one = $("ul.kv-slider-carousel li:eq(0)");//获取ul下的第一个li标签
+            $one.remove();//移除
+            var i = $("ul.kv-slider-carousel li:eq(0)").attr("aa");
+            //alert(i);
+            $("ol li:eq(" + parseInt(i) + ")").attr("class", "kv-slider-active");//切换图标的高亮显示
+            $("ul.kv-slider-carousel").css("left", "0%");//重新定位
+            $one.appendTo("ul.kv-slider-carousel");//把移除的li追加给ul
+        });
+        //setTimeout用于在指定的毫秒数后调用函数
+        mm = setTimeout("hh()", 4000);
+    }
+    $(function () {
+        $(document).ready(function () {
+            var oneState = '<li class="gridBox-link kv3" style="width: 16.6667%;" aa="0" bb="shopStore-kv-active">' +
+                '<div class="slidItem"> <div class="slidItem-content slid2-t"> <img src="//www.niucache.com/static/common/widget/slider/slider/0821-1_e846c2d1.png">' +
+                '<a href="javascript:;" class="slidLinkBtn gridBox-link">了解更多<i class="icon-right"></i></a></div></div></li>' +
+                '<li class="gridBox-link kv1" style="width: 16.6667%;" aa="1" bb="shopStore-kv-active">' +
+                '<div class="slidItem"><div class="slidItem-content slid1-t" id="no"><p class="slid1-t-1">不露声色，却抢尽风头</p><p class="slid1-t-2">小牛电动 N1S PRO 天猫全球首发</p>' +
+                '<a href="javascript:;" class="slidLinkBtn gridBox-link slid1-t1">了解详情<i class="icon-right"></i></a></div></div></li>' +
+                '<li class="gridBox-link kv-1" style="width: 16.6667%;" aa="2" bb="shopStore-kv-active">' +
+                '<div class="slidItem-content slid-1-t" id="slid-1-t"><img src="//www.niucache.com/static/common/widget/slider/slider/KV1N1S0825-1_27198195.png">' +
+                '<p class="slid-1-t2">140 公里超长续航 ／ 智能 APP 防盗 ／ 丢一台赔一台</p><div class="slid1-t-3">' +
+                '<a href="javascript:;" class="slidLinkBtn gridBox-link slid-1-t4" data-type="link" data-target="https://store.niu.com/n1s">了解N1S<i class="icon-right"></i></a>' +
+                '<a href="javascript:;" class="slidLinkBtn gridBox-link slid-1-t5" data-type="link" data-target="https://store.niu.com/buy/n1s">立即购买<i class="icon-right"></i></a>' +
+                '</div></div></li>';
+            var twoState = '<li class="gridBox-link kv1" style="width: 16.6667%;" aa="1" bb="shopStore-kv-active">' +
+                '<div class="slidItem"><div class="slidItem-content slid1-t" id="no"><p class="slid1-t-1">不露声色，却抢尽风头</p><p class="slid1-t-2">小牛电动 N1S PRO 天猫全球首发</p>' +
+                '<a href="javascript:;" class="slidLinkBtn gridBox-link slid1-t1">了解详情<i class="icon-right"></i></a></div></div></li>' +
+                '<li class="gridBox-link kv-1" style="width: 16.6667%;" aa="2" bb="shopStore-kv-active">' +
+                '<div class="slidItem-content slid-1-t" id="slid-1-t"><img src="//www.niucache.com/static/common/widget/slider/slider/KV1N1S0825-1_27198195.png">' +
+                '<p class="slid-1-t2">140 公里超长续航 ／ 智能 APP 防盗 ／ 丢一台赔一台</p><div class="slid1-t-3">' +
+                '<a href="javascript:;" class="slidLinkBtn gridBox-link slid-1-t4" data-type="link" data-target="https://store.niu.com/n1s">了解N1S<i class="icon-right"></i></a>' +
+                '<a href="javascript:;" class="slidLinkBtn gridBox-link slid-1-t5" data-type="link" data-target="https://store.niu.com/buy/n1s">立即购买<i class="icon-right"></i></a>' +
+                '</div></div></li>' + '<li class="gridBox-link kv3" style="width: 16.6667%;" aa="0" bb="shopStore-kv-active">' +
+                '<div class="slidItem"> <div class="slidItem-content slid2-t"> <img src="//www.niucache.com/static/common/widget/slider/slider/0821-1_e846c2d1.png">' +
+                '<a href="javascript:;" class="slidLinkBtn gridBox-link">了解更多<i class="icon-right"></i></a></div></div></li>';
+
+            var threeState = '<li class="gridBox-link kv-1" style="width: 16.6667%;" aa="2" bb="shopStore-kv-active">' +
+                '<div class="slidItem-content slid-1-t" id="slid-1-t"><img src="//www.niucache.com/static/common/widget/slider/slider/KV1N1S0825-1_27198195.png">' +
+                '<p class="slid-1-t2">140 公里超长续航 ／ 智能 APP 防盗 ／ 丢一台赔一台</p><div class="slid1-t-3">' +
+                '<a href="javascript:;" class="slidLinkBtn gridBox-link slid-1-t4" data-type="link" data-target="https://store.niu.com/n1s">了解N1S<i class="icon-right"></i></a>' +
+                '<a href="javascript:;" class="slidLinkBtn gridBox-link slid-1-t5" data-type="link" data-target="https://store.niu.com/buy/n1s">立即购买<i class="icon-right"></i></a>' +
+                '</div></div></li>' + '<li class="gridBox-link kv3" style="width: 16.6667%;" aa="0" bb="shopStore-kv-active">' +
+                '<div class="slidItem"> <div class="slidItem-content slid2-t"> <img src="//www.niucache.com/static/common/widget/slider/slider/0821-1_e846c2d1.png">' +
+                '<a href="javascript:;" class="slidLinkBtn gridBox-link">了解更多<i class="icon-right"></i></a></div></div></li>' + '<li class="gridBox-link kv1" style="width: 16.6667%;" aa="1" bb="shopStore-kv-active">' +
+                '<div class="slidItem"><div class="slidItem-content slid1-t" id="no"><p class="slid1-t-1">不露声色，却抢尽风头</p><p class="slid1-t-2">小牛电动 N1S PRO 天猫全球首发</p>' +
+                '<a href="javascript:;" class="slidLinkBtn gridBox-link slid1-t1">了解详情<i class="icon-right"></i></a></div></div></li>';
+            mm = setTimeout("hh()", 4000);
+            $("#one").click(function () {
+                //去掉所有ol li的样式
+                $("ol li").attr("class", "");
+                $("ol li:eq(0)").attr("class", "kv-slider-active");//让被点中的图标高亮
+                clearTimeout(mm);//阻止计时器函数mm的执行
+                $(".kv-slider-carousel").html(oneState);//给ul设置HTML oneTsate
+                //启用定时器
+                mm = setTimeout("hh()", 2000);
+            });
+            $("#two").click(function () {
+                //去掉所有ol li的样式
+                $("ol li").attr("class", "");
+                $("ol li:eq(1)").attr("class", "kv-slider-active");//让被点中的图标高亮
+                clearTimeout(mm);//阻止计时器函数mm的执行
+                $(".kv-slider-carousel").html(twoState);//给ul设置HTML oneTsate
+                //启用定时器
+                mm = setTimeout("hh()", 2000);
+            });
+            $("#three").click(function () {
+                //去掉所有ol li的样式
+                $("ol li").attr("class", "");
+                $("ol li:eq(2)").attr("class", "kv-slider-active");//让被点中的图标高亮
+                clearTimeout(mm);//阻止计时器函数mm的执行
+                $(".kv-slider-carousel").html(threeState);//给ul设置HTML oneTsate
+                //启用定时器
+                mm = setTimeout("hh()", 2000);
+            });
+        });
+    });
+</script>
+
+
+
+
+
+
+
+

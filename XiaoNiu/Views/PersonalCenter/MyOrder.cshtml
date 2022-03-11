@@ -1,0 +1,118 @@
+﻿
+@{
+    ViewBag.Title = "MyOrder";
+    Layout = "~/Areas/XiaoNiu/Views/Shared/_CommonPage.cshtml";
+}
+
+@* 订单整体的内容*@
+<link href="~/Content/PersonalCenter/MyOrder/CSS/my_order_9a1ac7ef.css" rel="stylesheet" />
+<link href="~/Content/PersonalCenter/MyOrder/CSS/orderItem_ddbaee99.css" rel="stylesheet" />  @* 左边头像部分样式*@
+<link href="~/Content/PersonalCenter/MyOrder/CSS/usertip_04c7f319.css" rel="stylesheet" />   @*右边订单详细样式*@
+
+<section class="myOrder">
+    @* 左边头像部分*@
+    <div class="userPanel">
+        <div class="usertip active1">
+            <div class="head">
+                <img class="myHead" src="~/Content/img/Zayn.jpg" alt="">
+            </div>
+            <a class="active1" href="@Url.Action("MyOrder")">我的订单</a>
+
+            <a class="active4" href="@Url.Action("ModifyPWD")" id="changePwd">修改密码</a>
+        </div>
+    </div>
+
+    @*右边订单详细*@
+    <div class="orderGroup">
+        <div class="orderGroup-title">
+            <ul id="state">
+                <li class="orderGroup-title-item active" id="allorder">
+                    <p>全部订单</p>
+                    <span class="arrow-up"><i></i></span>
+                </li>
+                <li class="orderGroup-title-item" id="daifukuan">
+                    <p>待付款</p>
+                    <span class="arrow-up"><i></i></span>
+                </li>
+                <li class="orderGroup-title-item" id="wancheng">
+                    <p>已完成</p>
+                    <span class="arrow-up"><i></i></span>
+                </li>
+                <li class="orderGroup-title-item" id="tuihuanhuo">
+                    <p>退换货</p>
+                    <span class="arrow-up"><i></i></span>
+                </li>
+            </ul>
+        </div>
+
+        <div id="orderGroupList" class="orderGroup-list">
+            @{Html.RenderAction("CheckState");}
+        </div>
+
+        <div id="orderGroupList" class="orderGroup-list" style="display:none">
+            <p class="noOrder">没有查询到订单</p>
+        </div>
+
+        <div class="loadinggif" style="display:none"></div>
+    </div>
+
+    @* 没有查询到订单 *@
+
+</section>
+
+
+<div class="niu-mask"></div>
+<div class="niu-dialog">
+    <div class="niu-dialog-head">提示</div>
+    <div class="niu-dialog-body">
+        <p></p>
+    </div>
+    <div class="niu-dialog-foot">
+        <span class="niu-btn niu-btn-middle niu-btn-red niu-dialog-confirm">确认</span>
+        <span class="niu-btn niu-btn-middle niu-btn-gray niu-dialog-cancel">取消</span>
+    </div>
+    <span style="display:none;" class="niu-dialog-close"></span>
+</div>
+
+<p id="hidd"></p>
+
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+
+<script>
+    $(function () {
+        //获取不同的状态 添加点击事件
+        $("ul#state li").each(function () {
+            $(this).click(function () {
+                //加载图标显示
+                $(".loadinggif").css("display", "inline-block");
+                //先把所有样式设置成一样的
+                $("ul#state li").attr("class", "orderGroup-title-item");
+                //再把被选中的订单状态的字体颜色变为黑色
+                $(this).attr("class", "orderGroup-title-item active");
+                //获取点击的订单状态
+                var state = $(this).find("p").text();
+                //如果获得的状态是“已完成”  需要改成“已付款”
+                if (state == "已完成") {
+                    state = "已付款";
+                }
+                //异步发送请求 加载数据
+                $.get("@Url.Action("CheckState")", { orderState: state }, function (data) {
+                    $(".loadinggif").css("display", "none");
+                    //alert(data.length);
+                    if (data.length !=2) {
+                        $("#orderGroupList").html(data);
+                    } else {
+                        $("#orderGroupList").html('<p class="noOrder">没有查询到订单</p>');
+                    }
+                });
+            });
+        });
+
+    });
+    //如果用户没有订单  显示没有查询到订单记录
+    $(document).ready(function () {
+        if (parseInt(@ViewBag.count) == 0) {
+            $("#orderGroupList").html('<p class="noOrder">没有查询到订单</p>');
+        }
+    });
+</script>

@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Areas/XiaoNiu/Views/Shared/_CommonPage.cshtml";
+}
+@*@using System.Web.UI.WebControls;*@
+<link href="~/Content/Login/CSS/MyLogin.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<section class="content">
+    <article class="c-login">
+        @*action="@Url.Action("Login")"*@
+        <form method="post" role="form" id="login_form">
+            <span class="niu-form-title">用户登录</span>
+            <input type="hidden" name="_csrf" value="">
+            <span class="niu-input niu-input-large niu-input-account">
+                <i></i>
+                <input type="text" id="CustomerName" name="CustomerName" value="" placeholder="请输入用户名">
+                <div class="disabled-box disabled-box-account">
+                    <span class="niu-disabled-icon"></span>
+                    <span class="niu-tipmsg niu-tipmsg-account" style="color:red;">此用户名不存在</span>
+                </div>
+            </span>
+            <span class="niu-input niu-input-large niu-input-pwd">
+                <i></i>
+                <input type="password" id="CustomerPWD" name="CustomerPWD" placeholder="请输入密码">
+                <div class="disabled-box disabled-box-pwd">
+                    <span class="niu-disabled-icon"></span>
+                    <span class="niu-tipmsg niu-tipmsg-pwd" style="color:red;">密码不正确</span>
+                </div>
+            </span>
+            <div class="slideVerify">
+                <input type="hidden" id="ip_tip" name="ip_tip" value="">
+            </div>
+            <div class="loginsele clearfix">
+                <input class="niu-checkbox" type="checkbox" name="remember" id="remember"><label class="niu-checkbox-lable" for='remember'>记住登录状态</label>
+                <a href="@Url.Action("Register")"><span class="getpwd">快速注册</span></a>
+                <a href="#"><span class="getpwd">忘记密码</span></a>
+            </div>
+            <input type="button" value="立即登录" class="niu-btn niu-btn-large niu-btn-red" id="loginbtn" />
+        </form>
+
+        <div class="loginother clearfix">
+
+        </div>
+    </article>
+</section>
+<script>
+    $(function () {
+        $("#loginbtn").click(function () {
+            //验证账号 密码
+            var c = {
+                CustomerName: $("#CustomerName").val(),
+                CustomerPWD: $("#CustomerPWD").val(),
+            }
+            //发送post请求
+            $.post("@Url.Action("Login","HomePage")", c, function (data) {
+                if (data == "NoName") {
+                    $(".disabled-box-account").show();//用户名不存在
+                    return false;
+                } else if (data == "ErroPWD") {
+                    $(".disabled-box-pwd").show();//密码有误
+                    return false;
+                } else if (data == "1") {
+                    alert("该用户失效，请联系客服");
+                    return false;
+                } else {
+                    window.location = data;
+                }
+            });
+        });
+        //点击验证错误提示信息的div隐藏
+        $(".disabled-box-account").click(function () {
+            $(this).hide();
+            $("#CustomerName").focus();//让inpu输入框 再次获得焦点
+        });
+
+        $(".disabled-box-pwd").click(function () {
+            $(this).hide();
+            $("#CustomerPWD").focus();//让inpu输入框 再次获得焦点
+        });
+    });
+</script>

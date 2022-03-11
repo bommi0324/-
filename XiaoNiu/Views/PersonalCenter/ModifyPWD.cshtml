@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Title = "ModifyPWD";
+    Layout = "~/Areas/XiaoNiu/Views/Shared/_CommonPage.cshtml";
+}
+<link href="~/Content/PersonalCenter/CSS/ModifyP.css" rel="stylesheet" />
+
+
+<section class="content">
+    <div class="c-modify" dd="@ViewBag.pwd">
+        <span class="niu-form-title">修改密码</span>
+        <form action="/modify" method="post" role="form" id="modify_form">
+            <span class="niu-input niu-input-large niu-input-oldpwd">
+                <i></i>
+                <input type="password" id="old_password" name="old_password" placeholder="请输入旧密码">
+                <div class="disabled-box" id="oldPWD">
+                    <span class="niu-disabled-icon"></span>
+                    <span class="niu-tipmsg niu-tipmsg-oldpwd" style="color:#ff0000">旧密码不正确</span>
+                </div>
+            </span>
+            <span class="niu-input niu-input-large niu-input-pwd">
+                <i></i>
+                <input type="password" id="password" name="password" placeholder="请输入新密码">
+                <div class="disabled-box" id="newPwd">
+                    <span class="niu-disabled-icon"></span>
+                    <span class="niu-tipmsg niu-tipmsg-pwd" style="color:#ff0000">新密码格式不对</span>
+                </div>
+            </span>
+            <span class="niu-input niu-input-large niu-input-repwd">
+                <i></i>
+                <input type="password" id="re_password" name="re_password" placeholder="请再次输入新密码">
+                <div class="disabled-box" id="newRPWD">
+                    <span class="niu-disabled-icon"></span>
+                    <span class="niu-tipmsg niu-tipmsg-repwd" style="color:#ff0000">两次密码不一样</span>
+                </div>
+            </span>
+        </form>
+        <button class="niu-btn niu-btn-large niu-btn-red" id="modify_btn">设置新密码</button>
+    </div>
+</section>
+<script>
+    $(function () {
+        $("#modify_btn").click(function () {
+            //验证旧密码是否正确
+            //获取查询到的密码
+            var pwd = $(".c-modify").attr("dd");
+            if (pwd != $("#old_password").val()) {
+                $("#oldPWD").show();
+            }
+            //验证密码
+            var reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,10}$/;
+            if (!reg.test($("#password").val())) {
+                $("#newPwd").show();
+                return false;
+            }
+            //验证重复密码密码
+            if ($("#re_password").val() != $("#password").val() || $("#re_password").val() == "") {
+                $("#newRPWD").show();
+                return false;
+            }
+            //发送post请求
+            $.post("@Url.Action("ModifyPWD", "PersonalCenter")", { newPwd: $("#password").val() }, function (data) {
+                window.location = data;
+            });
+        });
+        $("#oldPWD").click(function () {
+            $(this).hide();
+            $("#old_password").focus();//让inpu输入框 再次获得焦点
+        });
+        $("#newPwd").click(function () {
+            $(this).hide();
+            $("#password").focus();//让inpu输入框 再次获得焦点
+        });
+        $("#newRPWD").click(function () {
+            $(this).hide();
+            $("#re_password").focus();//让inpu输入框 再次获得焦点
+        });
+    });
+</script>
+
+
+
+

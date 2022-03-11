@@ -1,0 +1,152 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<link href="~/Content/Register/CSS/signup2.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+@*<script src="~/Content/Register/JS/MyJJ.js"></script>*@
+@*action="@Url.Action("Register", "HomePage")"*@
+<section class="content">
+    <div class="c-signup">
+        <div class="niu-form-title"><span>快速注册</span></div>
+        <form method="post" role="form" id="signup_form">
+            @*用户名*@
+            <span class="niu-input niu-input-large niu-input-account" id="tt">
+                <i></i>
+                <input type="text" id="CustomerName" name="CustomerName" value="" placeholder="请输入用户名">
+                <div class="disabled-box disabled-box-Count">
+                    <span class="niu-disabled-icon"></span>
+                    <span class="niu-tipmsg niu-tipmsg-account" id="test" style="color:red;">用户名长度必须大于2</span>
+                </div>
+            </span>
+            @*密码*@
+            <span class="niu-input niu-input-large niu-input-pwd">
+                <i></i>
+                <input type="password" id="CustomerPWD" name="CustomerPWD" placeholder="密码必须包含字母数字且大于6位">
+                <div class="disabled-box disabled-box-pwd">
+                    <span class="niu-disabled-icon"></span>
+                    <span class="niu-tipmsg niu-tipmsg-pwd" style="color:red;">密码必须包含字母数字且大于6位</span>
+                </div>
+            </span>
+            @*确认密码*@
+            <span class="niu-input niu-input-large niu-input-repwd">
+                <i></i>
+                <input type="password" class="required" id="re_CustomerPWD" name="re_CustomerPWD" placeholder="请再次输入密码" verify="numandstr:!" @*msg="密码格式不正确:请确认密码"*@>
+                <div class="disabled-box disabled-box-repwd">
+                    <span class="niu-disabled-icon"></span>
+                    <span class="niu-tipmsg niu-tipmsg-repwd" style="color:red;">两次输入的密码不一致</span>
+                </div>
+            </span>
+            @*电话号码*@
+            <span class="niu-input niu-input-large niu-input-phone">
+                <i></i>
+                <input type="text" id="Tel" class="required" name="Tel" placeholder="请输入电话号码" verify="numandstr:!" @*msg="电话号码格式不正确:请输入电话号码"*@>
+                <div class="disabled-box disabled-box-phone">
+                    <span class="niu-disabled-icon"></span>
+                    <span class="niu-tipmsg niu-tipmsg-account" style="color:red;">电话号码格式不正确</span>
+                </div>
+            </span>
+            @*邮件*@
+            <span class="niu-input niu-input-large niu-input-email">
+                <i></i>
+                <input id="Email" name="Email" class="required" type="text" placeholder="请输入电子邮箱（选填）" verify="email:" @*msg="邮箱格式不正确"*@>
+                <div class="disabled-box disabled-box-email">
+                    <span class="niu-disabled-icon"></span>
+                    <span class="niu-tipmsg niu-tipmsg-email" style="color:red;">邮箱格式不正确</span>
+                </div>
+            </span>
+            <div class="protocol clearfix">
+                <div id="cc" style="color: red; font-size: 6px;"></div>
+                <input class="niu-checkbox" type="checkbox" name="protocol" id="protocol" checked="checked">
+                <label class="niu-checkbox-lable" for='protocol'>已阅读并同意注册&nbsp;<a class="protocol-link" href="/protocol">用户协议</a></label>
+                <a href="@Url.Action("Login","HomePage")">账号登录></a>
+            </div>
+            <input type="button" name="sub" class="niu-btn niu-btn-large niu-btn-red" id="signup_btn" value="完成注册" />
+
+        </form>
+    </div>
+</section>
+
+<script>
+    $(function () {
+        $("#signup_btn").click(function () {    //验证用户名合法性
+            if ($("#CustomerName").val().trim().length < 2) {
+                $(".disabled-box-Count").show();
+                $(".disabled-box-Count").find("span#test").text("用户名长度必须大于2");
+                return false;
+            };
+            //验证密码
+            var reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,10}$/;
+            if (!reg.test($("#CustomerPWD").val())) {
+                $(".disabled-box-pwd").show();
+                return false;
+            }
+            //确认密码
+            if ($("#re_CustomerPWD").val() != $("#CustomerPWD").val() || $("#re_CustomerPWD").val() == "") {
+                $(".disabled-box-repwd").show();
+                return false;
+            }
+            //验证电话
+            if (isNaN($("#Tel").val()) || $("#Tel").val().trim().length != 11) {
+                $(".disabled-box-phone").show();
+                return false;
+            }
+            //验证邮件
+            var reg = /^[a-zA-Z0-9_.-]+@@[a-zA-Z0-9-]+(\.[a-zA-Z0-9])*\.[a-zA-Z0-9]{2,6}$/;
+            if (!reg.test($("#Email").val())) {
+                $(".disabled-box-email").show();
+                return false;
+            }
+            //判断是否同意
+            if ($("#protocol").attr("checked") != "checked") {
+                return false;
+            }
+            var p = {
+                CustomerName: $("#CustomerName").val(),
+                CustomerPWD: $("#CustomerPWD").val(),
+                Tel: $("#Tel").val(),
+                Email: $("#Email").val(),
+            }
+            //注册
+            $.post("/HomePage/Register", p, function (data) {
+                if (data == "No") {
+                    $(".disabled-box-Count").show();
+                    $(".disabled-box-Count").find("span#test").text("此用户已存在，请换个名字");
+                    return false;
+                }
+                else {
+                    window.location = data;
+                }
+            });
+        });
+    });
+
+    //点击验证错误提示信息的div隐藏
+    $(".disabled-box-Count").click(function () {
+        $(this).hide();
+        $(".niu-input-account input").focus();//让inpu输入框 再次获得焦点
+    });
+
+    $(".disabled-box-pwd").click(function () {
+        $(this).hide();
+        $(".niu-input-pwd input").focus();//让inpu输入框 再次获得焦点
+    });
+
+    $(".disabled-box-repwd").click(function () {
+        $(this).hide();
+        $(".disabled-box-repwd input").focus();//让inpu输入框 再次获得焦点
+    });
+
+    $(".disabled-box-phone").click(function () {
+        $(this).hide();
+        $(".disabled-box-phone input").focus();//让inpu输入框 再次获得焦点
+    });
+
+    $(".disabled-box-email").click(function () {
+        $(this).hide();
+        $(".disabled-box-email input").focus();//让inpu输入框 再次获得焦点
+    });
+</script>

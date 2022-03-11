@@ -1,0 +1,146 @@
+﻿<style>
+    .haha {
+        float: left;
+    }
+</style>
+@foreach (Shopping.Models.Address item in ViewBag.address)
+{
+    <div class="addressitem onselect viewAdress" group="address" mm="@item.IsDefault.ToString()" state="@item.AddressName" adreeid="@item.AddressID" select="No">
+        @if (item.IsDefault.ToString() == "True")
+        {
+            <img src="~/Content/WriteInfo/Img/default_dcd86803.png" />
+        }
+        <span id="name">@item.AddressName 收</span>
+        <hr>
+        <p id="tel">@item.Tel</p>
+        <p id="areas">@item.Areas</p>
+        <p id="addressInfo">@item.AddressInfo</p>
+        <div class="btngroup">
+            <span class="modaddressbtn" adressid="@item.AddressID"> </span>
+            <span class="deladdressbtn" adressid="@item.AddressID"> </span>
+        </div>
+    </div>
+}
+
+@*收货人地址不大于6个*@
+@if (ViewBag.count < 6)
+{
+    <div id="J_additem" class="addressitem addaddressitem"></div>
+}
+<input type="text" id="sl" value="@ViewBag.count" class="hide" />
+
+
+
+<div class="niuDialog-mask show" style="display:none;" id="one"></div>
+<div class="niuDialog alert show" style="display:none;" id=two>
+    <div class="niuDialog-head"></div>
+    <div class="niuDialog-body">
+
+    </div>
+    <div class="niuDialog-foot">
+        <span class="niuDialog-leftBtn ">
+            确定
+        </span>
+        <span class="niuDialog-rightBtn " style="padding-right: 10px; color: #df001f; float: right;">
+            取消
+        </span>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        //除了被选中的地址外 其他地址都设置为白色背景
+        $(".viewAdress").css("background-color", "white");
+        $(".viewAdress").each(function () {
+            //判断该地址是否是默认的
+            if ($(this).attr("mm") == "True") {
+                //找到发票抬头文本框 把收货人姓名设置给发票抬头文本框
+                $("#input_taxTitle").val($(this).attr("state"));
+                $("#input_taxTitle").attr("naa", $(this).attr("state"));  //给naa属性设置属性值
+                $(this).attr("select", "Yes");  //设置选中状态
+                //换背景
+                $(this).css("background", "url(/Content/WriteInfo/Img/沟.png) no-repeat right bottom");
+                $(this).css("background-color", "#f5f3f3");
+            }
+            //鼠标移入移除 显示修改删除按钮
+            $(this).hover(function () {
+                //鼠标移入 显示
+                $(this).find(".modaddressbtn").css("background", "url(/Content/WriteInfo/Img/修改.png) no-repeat right center");
+                $(this).find(".deladdressbtn").css("background", "url(/Content/WriteInfo/Img/X.png) no-repeat right center");
+            }, function () {
+                $(this).find(".modaddressbtn").css("background", "");
+                $(this).find(".deladdressbtn").css("background", "");
+            });
+            //点击地址后 换背景颜色
+            $(this).click(function () {
+                $("#input_taxTitle").val($(this).attr("state"));
+                $("#input_taxTitle").attr("naa", $(this).attr("state"));  //给naa属性设置属性值
+                //把所有地址 设置选中状态为 No
+                $(".viewAdress").attr("select", "No");
+                $(this).attr("select", "Yes");  //设置选中状态Yes
+                $(".viewAdress").css("background", "#fff url()");
+                $(this).css("background", "#f5f3f3 url(/Content/WriteInfo/Img/沟.png) no-repeat right bottom");
+            });
+            //给修改设置点击事件 发送修改请求
+            $(this).find("span.modaddressbtn").click(function(){
+                //获取修改地址的ID
+                var id = $(this).attr("adressid");
+                //发送修改请求
+                $.get("@Url.Action("UpdateAddress")", { addressID: id }, function (data) {
+                    $("#J_addaddress").html(data);   //重新加载修改视图
+                    //隐藏显示地址的模块
+                    $(".addressbox").hide();
+                    //显示添加地址的界面
+                    $(".addaddress").show();
+                });
+            });
+            //删除地址
+            var id;
+            $(this).find("span.deladdressbtn").click(function () {
+                id = $(this).attr("adressid");  //获取删除地址的ID
+                $("#one,#two").css("display", "block");
+                $(".niuDialog-head").text("确定删除该地址？");
+                $(".niuDialog-body").text("收货需要地址哦！");
+                //设置确定 取消 样式
+                $(".niuDialog-leftBtn").addClass("quxiao").text("取消");
+                $(".niuDialog-rightBtn").css("display", "block").text("确定");
+            });
+            //点击确定
+            $(".niuDialog-rightBtn").click(function () {
+                $("#one,#two").css("display", "none");  //关闭提示框
+                $(".niuDialog-leftBtn").removeClass("quxiao").text("确定");
+                $(".niuDialog-rightBtn").css("display", "none").text("取消");
+                //发送删除请求
+                $.ajax({
+                    type: "post",
+                    url: "@Url.Action("DeleteAddress")",
+                    data: { addressid: id },
+                    success: function (data) {
+                        $("#J_addressbox").html(data);  //删除地址成功后
+                        //如果是最后一个地址被删除了  将发票抬头内容 设置为空
+                        if (parseInt($("#sl").val()) == 0) {
+                            $("#input_taxTitle").val("");
+                            $("#input_taxTitle").attr("naa", "");
+                        }
+                    }
+                });
+            });
+        });
+    });
+    //添加地址
+    $(function () {
+        $("#J_additem").click(function () {
+            $.get("@Url.Action("UpdateAddress")", function (data) {
+                $("#J_addaddress").html(data);   //添加地址成功后 重新加载地址
+                //隐藏显示地址的模块
+                $(".addressbox").hide();
+                //显示添加地址的界面
+                $(".addaddress").show();
+            });
+        });
+    });
+
+</script>

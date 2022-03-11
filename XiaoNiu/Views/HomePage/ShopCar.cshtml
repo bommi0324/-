@@ -1,0 +1,127 @@
+﻿@if (ViewBag.customerID == null)
+{
+    <!--未登录显示：-->
+    <div class="collapse cart-collapse-empty cart-collapse">
+        <div class="cart-collapse-content emptyCont">
+            <p class="nogoods">你的购物车是空的！去选购商品吧</p>
+        </div>
+    </div>
+}
+else
+{ <!--登录后显示-->
+    if (ViewBag.count != 0)
+    {
+        <div class="collapse cart-collapse">
+            <div class="cart-slider">
+                <div class="cart-collapse-slid cart-slider-horizontal" style="position: relative; overflow: hidden;" id="uu">
+                    <ul class="cart-slider-wrap cart-slider-carousel" style="width: 100%; left: 0%;" id="shopCar">
+
+                        @foreach (Shopping.Areas.XiaoNiu.Models.ShopC item in ViewBag.shop)
+                        {
+                            var xj = int.Parse(item.Price) * int.Parse(item.Count);
+                            <!--li 里面不要加宽度  就可以循环li标签-->
+                            <li class="cart-collapse-slid-content cart-slider-active">
+                                <div class="cart-collapse-item">
+                                    <div class="cart-collapse-item-img">
+                                        <img src="~/Content/img/@item.IMG" />
+                                    </div>
+                                    <div class="cart-collapse-item-options description">
+                                        <p>@item.TypeName @item.ProName</p>
+                                        <span></span>
+                                    </div>
+                                    <div class="cart-collapse-item-options price">
+                                        <p>单价</p>
+                                        <span id="price12" xj="@xj">@item.Price</span>元
+                                    </div>
+                                    <div class="cart-collapse-item-options quantity">
+                                        <p>数量</p>
+                                        <span>@item.Count</span>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                @if (ViewBag.count>2)
+                {
+                <a class="cart-collapse-arrow icon-circle next" state="1"><span class="icon-right"></span></a>
+                <a class="cart-collapse-arrow icon-circle prev" state="1"><span class="icon-left"></span></a>
+                }
+
+            </div>
+            <div class="cart-collapse-bottom">
+                <a href="@Url.Action("ShopCar","ShopCar")" class="goCart">去购物车结算</a>
+                <p id="hj">合计 00.00元</p>
+                <p>共计 <span id="Qtity">0</span> 件商品</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!--未登录显示：-->
+        <div class="collapse cart-collapse-empty cart-collapse">
+            <div class="cart-collapse-content emptyCont">
+                <p class="nogoods">你的购物车是空的！去选购商品吧</p>
+            </div>
+        </div>
+    }
+}
+<script>
+    $(document).ready(function () {
+        $(".cart-slider-wrap").css("border", "none");
+        var zj = 0;
+        $("div.price span").each(function () {
+            //求购物车商品的总价zj
+            zj = parseInt(zj) + parseInt($(this).attr("xj"));
+        });
+        $("#hj").text("合计" + zj + "元");
+        //购物车商品数量
+        var count = 0;
+        $("div.quantity span").each(function () {
+            //求购物车商品的总价zj
+            count = parseInt(count) + parseInt($(this).text());
+        });
+        $("#Qtity").text(count);
+        //获得当前的li标签的个数
+        var lis = $("ul#shopCar li").length;
+
+        //一页显示两个li标签  宽是1170px
+        //求页数
+        var ll = parseInt(lis) / 2;
+        if (parseInt(lis) % 2 != 0) {
+            ll = parseInt(ll) + 1;
+        }
+        //设置ul的宽度
+        var width = 1170 * parseInt(ll);
+        $("#shopCar").width(width + "px");
+
+        //分页
+        //上一页  左移
+        $(".prev").click(function () {
+            if ($(this).attr("state") != 1) {
+                //获得状态值
+                var st = $(this).attr("state");
+                //上一页  把状态值减一
+                var newstate = parseInt(st) - 1;
+                $(this).attr("state", newstate);
+                $(".next").attr("state", newstate);
+                //给ul做动画
+                $("ul#shopCar").animate({ "left": "+=" + "1170px" },1000);
+            }
+        });
+        //下一页  右移
+        $(".next").click(function () {
+            //点下一夜的时候  状态值不等于总页数 就可以查看下一页
+            if ($(this).attr("state") != ll) {
+                //获得状态值
+                var st = $(this).attr("state");
+                //下一页  把状态值加一
+                var newstate = parseInt(st) + 1;
+                $(this).attr("state", newstate);
+                $(".prev").attr("state", newstate);
+                //给ul做动画
+                $("ul#shopCar").animate({ "left": "-=" + "1170px" },1000);
+            }
+        });
+    });
+</script>

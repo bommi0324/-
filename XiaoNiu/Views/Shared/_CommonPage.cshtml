@@ -1,0 +1,225 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>小牛电动</title>
+    <link href="~/Content/Master/CSS/static-common-common_99ddccb1.css" rel="stylesheet" />
+    @*图标CSS样式*@
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            //hover 当鼠标悬停在某个元素上的时候，要运行两个函数
+            $("#XiaoN").hover(function () {
+                //鼠标移入
+                $(".car-collapse").addClass("show").css("display","inline-block");
+            }, function () {
+                //鼠标移出
+                $(".car-collapse").hide();
+                });
+
+            //个人信息悬浮框
+            $("#head_menu_userstatus").hover(function () {
+                //鼠标移入
+                $(".user-collapse").addClass("show").css("display", "inline-block");
+            }, function () {
+                //鼠标移出
+                $(".user-collapse").hide();
+             }); 
+            $("#head_menu_cartlist").hover(function () {
+                $(".cart-collapse-empty").addClass("show").css("display", "inline-block");
+            },
+            function () {
+                $(".cart-collapse-empty").hide();
+                });
+
+            //购物车悬浮框
+            $("#head_menu_cartlist").hover(function () {
+                //鼠标移入
+                $(".cart-collapse").addClass("show").css("display", "inline-block");
+            }, function () {
+                //鼠标移出
+                $(".cart-collapse").hide();
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <header class="niu-header fixed-top">
+        <div class="header-navCont">
+            <a href="@Url.Action("Index","HomePage")"><div class="header-brand" style="background:url(/Content/img/logo_28139158.jpg) no-repeat center"></div></a>
+            <nav class="header-nav">
+                <ul>
+                    <li class="header-nav-collapse" id="XiaoN">
+                        <a href="#" id="xn">小牛电动</a>
+                        <div class="collapse car-collapse">
+                            <div class="car-collapse-content">
+                                <ul>
+                                    <li><a href="#" target="_blank"><img src="~/Content/Master/Img/m1-header_93193f53.jpg" /><span>M1</span></a></li>
+                                    <li><a href="#" target="_blank"><img src="~/Content/Master/Img/n1-header_a7bccb9d.jpg" /><span>N1S</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a target="_blank" href="@Url.Action("ViewProduct","Store")">商城</a></li>
+                    <li><a target="_blank" href="#">Niu X Plan</a></li>
+                    <li><a target="_blank" href="#">新车试驾</a></li>
+                    <li class="header-nav-collapse">
+                        <a target="_blank" href="#">服务</a>
+                        <div class="collapse service-collapse">
+                            <div class="service-collapse-content">
+                                <ul>
+                                    <li>
+                                        <a target="_blank" href="#">
+                                            <div class="service-collapse-content-icon service-care-icon">
+
+                                            </div>
+                                            <div class="service-collapse-content-title">
+                                                <p>NIU CARE</p>
+                                                <p>保养计划</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="#">
+                                            <div class="service-collapse-content-icon service-insurence-icon">
+
+                                            </div>
+                                            <div class="service-collapse-content-title">
+                                                <p>牛油保</p>
+                                                <p>人车保险</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="#">
+                                            <div class="service-collapse-content-icon service-locate-icon">
+                                            </div>
+                                            <div class="service-collapse-content-title">
+                                                <p>网点</p>
+                                                <p>查找线下服务</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a target="_blank" href="#">社区</a></li>
+                </ul>
+            </nav>
+            <div class="header-right">
+                <ul class="header-link">
+                    <li class="header-link-item" id="head_menu_userstatus">
+                        <a href="#"><img src="~/Content/img/user.jpg" /></a>
+                        <div class="collapse user-collapse">
+                            <!--RenderAction 应用分布视图-->
+                            @{ Html.RenderAction("CustomerInfo", "HomePage");}
+                        </div>
+                    </li>
+
+
+                    <li class="header-link-item" id="head_menu_cartlist">
+                        <a target="_blank" href="#"><img src="~/Content/img/cart.png" /></a>
+                        @{ Html.RenderAction("ShopCar", "HomePage");}
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </header>
+
+
+    @*start: 中间的*@
+
+    <div>
+
+        @RenderBody()
+    </div>
+
+    @*end*@
+
+
+    <div class="video-mask hide"></div>
+    <div class="video-content hide">
+        <embed class="video-content-embed" src="" quality="high" width="1140" height="640" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash"></embed>
+        <span class="icon-cross video-content-close"></span>
+    </div>
+
+
+
+
+    <footer class="footnav">
+        <nav class="bottom-nav">
+            <div class="bn-content">
+                <ul class="nav-block">
+                    <li>
+                        <h3>了解产品</h3>
+                        <p><a target="_blank" href="#">小牛电动 N1S</a></p>
+                        <p><a target="_blank" href="#">小牛电动 M1</a></p>
+                        <p><a target="_blank" href="#">配件</a></p>
+                    </li>
+                    <li>
+                        <h3>服务与支持</h3>
+                        <p><a target="_blank" href="#">查找网点</a></p>
+                        <p><a target="_blank" href="#">小牛驾到</a></p>
+                        <p><a target="_blank" href="#">牛油保</a></p>
+                        <p><a target="_blank" href="#">NIU CARE</a></p>
+                        <p><a target="_blank" href="#">售后政策</a></p>
+                        <p><a target="_blank" href="http://www.niu.com/niuapp">NIU APP</a></p>
+                    </li>
+                    <li>
+                        <h3>帮助中心</h3>
+                        <p><a target="_blank" href="#">购买指南</a></p>
+                        <p><a target="_blank" href="#">支付方式</a></p>
+                        <p><a target="_blank" href="#">配送政策</a></p>
+                    </li>
+                    <li>
+                        <h3>关于我们</h3>
+                        <p><a target="_blank" href="http://service.niu.com/team/">公司简介</a></p>
+                        <p><a target="_blank" href="#">联系我们</a></p>
+                        <p><a target="_blank" href="#">加入我们</a></p>
+                    </li>
+                    <li>
+                        <h3>关注我们</h3>
+                        <!-- <p class="erweima"> -->
+                        <p class="tooltip">
+                            <a class="wechat" target="_blank" href="javascript:;"><i class="icon-wechat"></i>微信公众号</a>
+
+                            <span class="tooltiptext"><img src="~/Content/Master/Img/qrcode-wechat-niu@2x_d85f8494.png" width="90" height="90" alt="" /></span>
+                        </p>
+                        <!-- <a target="_blank" href="javascript:;">微信公众号</a>
+                        <img src="erweima.jpg" alt=""/> -->
+                        <p><a class="weibo" target="_blank" href="http://weibo.com/niuescooter"><i class="icon-weibo"></i>新浪微博</a></p>
+                    </li>
+                    <li>
+                        <h3>客服</h3>
+                        <p><a href="tel:400-6388-666"><i class="icon-phone"></i>400-6388-666</a></p>
+                        <p>周一至周日 4:00-23:00</p>
+                        <p>仅收市话费</p>
+                        <p style="line-height: 12px;color: #d2d1d1;">售后由江苏小牛电动科技有限公司全权负责</p>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="bottom-bar">
+            <div class="cpr-content">
+                <span class="copyright">
+                    &copy;
+                    <script type="text/javascript">
+                        document.write(new Date().getFullYear());
+                    </script> niu.com All rights reserved.    北京牛电科技有限责任公司    京ICP备15010724号-1
+                    <a target="_blank" href="https://credit.szfw.org/CX20160331018802350193.html"><img src="~/Content/Master/Img/cert@2x_3adf00ac.png" width="16.7" height="14" alt="" /></a>
+                </span>
+                <div class="copyleft">
+                    <a href="http://www.niu.com/en/"> <i class="icon-global"></i>International</a>
+                    <span>中国</span>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+</body>
+</html>
+

@@ -1,0 +1,225 @@
+﻿
+@{
+    ViewBag.Title = "ShopCar";
+    Layout = "~/Areas/XiaoNiu/Views/Shared/_CommonPage.cshtml";
+}
+
+<link href="~/Content/MyShop/CSS/shopping_cart_2677d8db.css" rel="stylesheet" />
+<link href="~/Content/MyShop/CSS/shopping_process_nav_aa8a69db.css" rel="stylesheet" />
+
+
+<style>
+    .haha {
+        float:left;   
+    }
+</style>
+
+
+<section id="process1" class="shoppingprocess">
+    <div class="sp-content">
+        <ul class="process">
+            <li class="select1 pbtn">1.我的购物车</li>
+            <li class="select2 pbtn">2.填写订单信息</li>
+            <li class="select3 pbtn">3.完成支付</li>
+        </ul>
+    </div>
+</section>
+
+<section class="shoppingcart">
+    <div class="commodity" id="test">
+        <div class="captioncentent">
+            <ul class="caption">
+                <li class="com-message">商品信息</li>
+                <li class="com-pice">单价</li>
+                <li class="com-count">数量</li>
+                <li class="com-total">小计</li>
+                <li class="com-total">操作</li>
+            </ul>
+        </div>
+        @foreach (Shopping.Areas.XiaoNiu.Models.ShopC item in ViewBag.shop)
+        {
+            var price = item.Price;
+            var count = item.Count;
+            var zj = int.Parse(price) * int.Parse(count);
+            <ul class="com-item com-item-111">
+                <span class="com-select on com-select-111 icon-check" id="redGou" state="Yes" shopid="@item.ShopID"></span>
+                <li class="com-pic"><img src="~/Content/img/@item.IMG" /></li>
+                <li class="com-name">
+                    @item.TypeName   @item.ProName
+                </li>
+                
+                <li class="com-pice"><span id="price">@item.Price</span> 元</li>
+                <li class="com-count">
+                    <div class="countcontrol">
+                        <span class="countbtn subbtn" id="reduce">-</span>
+                        <input readonly="readonly" type="text" value="@item.Count" class="countinput" autocomplete="off" id="count">
+                        <span class="countbtn addbtn" id="Add">+</span>
+                    </div>
+                </li>
+                <li class="com-total"><span id="xj" name="xj">@zj</span>.00元</li>
+                <span class="delcom delcom-111" id="del" shopid="@item.ShopID"></span>
+            </ul>
+        }
+    </div>
+    <div class="comalltotal">
+        <span class="niu-btn-middle niu-btn-red goappy" id="goappy">下一步</span>
+        <span id="comalltotal">商品合计（不含运费）：00.00元</span>
+    </div>
+
+</section>
+
+
+<div class="niuDialog-mask show" style="display:none;" id="one"></div>
+<div class="niuDialog alert show" style="display:none;" id=two>
+    <div class="niuDialog-head"></div>
+    <div class="niuDialog-body"></div>
+    <div class="niuDialog-foot">
+        <span class="niuDialog-leftBtn" style="border:1px solid black">
+            取消
+        </span>
+        <span class="niuDialog-rightBtn" style="padding-right: 10px; color: #df001f; float:right;border:1px solid black">
+            确定
+        </span>
+    </div>
+</div>
+
+
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+<script>
+	function zj() {
+		var sum = 0;
+		$(".icon-check").each(function () {
+			if ($(this).attr("state") == "Yes") {
+				var zj = $(this).parents("ul").find("#xj").text();
+				sum = parseInt(sum) + parseInt(zj);
+			}
+		});
+		$("#comalltotal").text("商品总价格（不含运费）:" + sum + ".00元");
+	}
+
+	$(document).ready(function () {
+		$("#process1").css({ "height": "100px" });
+		$(".sp-content").css({ "margin-top": "80px" })
+		//设置下一步背景颜色
+		$("#goappy").css("background-color", "#df001f");
+		//总价
+		zj();
+
+		$(".icon-check").toggle(function () {
+			$(this).css("background-color", "white");
+			$(this).attr("state", "No");
+			zj();
+		}, function () {
+			$(this).css("background-color", "#df001f");
+			$(this).attr("state", "Yes");
+			zj();
+            });
+
+		//删除
+		var SId = "";
+		var $uu ;
+		$("#test").on("click", "span#del", function () {
+			SId = $(this).attr("shopid");//找到移除商品的ID
+			$uu = $(this).parents("ul");//获得要移除的ul
+			//提示用户
+            $("#one,#two").css("display", "block");
+            $(".niuDialog-head").text("你确定要删除这商品吗？").css({ "text-align": "center"});
+            $(".niuDialog-body").text("你会失去一个好的商品哦").css({ "text-align": "center"});
+			$(".niuDialog-rightBtn").css("display", "block");
+        });
+
+		//当取消的时候 把提示框隐藏
+		$(".niuDialog-leftBtn").click(function () {
+			$("#one,#two").css("display", "none");
+			$(".niuDialog-rightBtn").css("display", "none");
+		});
+		$(".niuDialog-rightBtn").click(function () {
+			$("#one,#two").css("display", "none");
+			$(".niuDialog-rightBtn").css("display", "none");
+			$.ajax({
+				type: "get",
+				url: "@Url.Action("DeleteShopCar")",
+				data: { id: SId },
+                success: function (data) {
+                    //alert(data);
+                    $uu.remove();//把页面上要删除的商品移除
+                    zj();
+				}
+			});
+        });
+
+        //添加数量
+        $("#test").on("click", "span#Add", function () {
+            var $ul = $(this).parents("ul");
+            var count = $ul.find("input#count").val();   //获取原来的数量
+            //修改数量显示
+            $ul.find("input#count").val(parseInt(count) + 1);  //在原来的数量基础上+1
+            //获得商品单价
+            var dj = $ul.find("span#price").text();
+            //修改后的数量
+            var sl = $ul.find("input#count").val();
+            //购物车 商品信息ID
+            var id = $ul.find("span#redGou").attr("shopid");
+            //异步修改数据库中购物车商品的数量
+            $.ajax({
+                type: "get",
+                url: "@Url.Action("UpdateShopCar")",
+                data: { shopID: id, Count: sl },
+                success: function (data) {
+                    //重新计算小计的价格
+                    $ul.find("span#xj").text(parseInt(dj) * parseInt(sl));
+                    //重新计算总金额
+                    zj();
+                }
+            });
+        });
+
+        //减少数量
+        $("#test").on("click", "span#reduce", function () {
+            var $ul = $(this).parents("ul");
+            var count = $ul.find("input#count").val();   //获取原来的数量
+            //修改数量显示
+            if (count > "1") {
+                //修改数量显示
+                $ul.find("input#count").val(parseInt(count) - 1);  //在原来的数量基础上+1
+                //获得商品单价
+                var dj = $ul.find("span#price").text();
+                //修改后的数量
+                var sl = $ul.find("input#count").val();
+                //购物车 商品信息ID
+                var id = $ul.find("span#redGou").attr("shopid");
+                //异步修改数据库中购物车商品的数量
+                $.ajax({
+                    type: "get",
+                    url: "@Url.Action("UpdateShopCar")",
+                    data: { shopID: id, Count: sl },
+                    success: function (data) {
+                        //重新计算小计的价格
+                        $ul.find("span#xj").text(parseInt(dj) * parseInt(sl));
+                        //重新计算总金额
+                        zj();
+                    }
+                });
+            }
+        });
+        //点击下一步  去到订单提交页面
+        $("#goappy").click(function () {
+            var id = "";
+            $(".icon-check").each(function () {
+                //判断商品是否被选中
+                if ($(this).attr("state") == "Yes") {
+                    id = id + $(this).attr("shopid") + "|";
+                }
+            });
+            //判断是否选中商品
+            if (id == "") { 
+                $("#one,#two").css("display", "block");
+                $(".niuDialog-body").text("请选择商品");
+                return false;
+            }
+            window.location = "/XiaoNiu/WriteOrderInfo/Write?ids=" + id;
+        });
+	});
+</script>

@@ -1,0 +1,193 @@
+﻿
+@{
+    ViewBag.Title = "Paypage";
+    Layout = "~/Areas/XiaoNiu/Views/Shared/_CommonPage.cshtml";
+}
+@model Shopping.Areas.XiaoNiu.Models.PayFor
+@using Shopping.Areas.XiaoNiu.Models
+<link href="~/Content/Pay/CSS/order_pay_3c3197bf.css" rel="stylesheet" />
+<link href="~/Content/Pay/CSS/shopping_process_nav_aa8a69db.css" rel="stylesheet" />
+
+
+<section id="process3" class="shoppingprocess">
+    <div class="sp-content">
+        <ul class="process">
+            <li class="select1 pbtn">1.我的购物车</li>
+            <li class="select2 pbtn">2.填写订单信息</li>
+            <li class="select3 pbtn">3.完成支付</li>
+        </ul>
+    </div>
+</section>
+
+<section class="order-pay top">
+    <div class="order-status">
+        <span class="order-status-money" id="fyzj">费用总计：4536.00元</span>
+        <div class="order-status-info">
+            <span class="order-status-info-status">等待付款</span>
+
+            <p>请在<b class="time"><span>2</span>小时</b>内完成支付，否则订单会自动取消。</p>
+        </div>
+
+        <!--<div class="openCart">-->
+        <!--<span>订单详情</span><img src="icon-down.png">-->
+        <!--</div>-->
+    </div>
+
+    <div class="choose">
+        选择支付方式
+    </div>
+    <div class="order-way">
+        <span class="otherpaybtn">切换支付方式</span>
+
+        <div class="order-way-block payfor-zfbpc" dd="2030" data-channel="alipay_pc_direct" data-msg="">
+            <div class="payicon">
+                <img src="~/Content/Pay/Img/zhifubao2_b09280b8.png" />
+            </div>
+            <div class="payfont">
+                <p>支付宝 网页支付</p>
+                <p class="payfont-t">登录网页版支付宝支付</p>
+            </div>
+        </div>
+        <div class="order-way-block payfor-wechat" data-channel="wx_pub_qr" data-msg="请打开手机微信客户端扫描二维码">
+                <div class="payicon">
+                    <img src="~/Content/Pay/Img/wechat_94ec50b3.png" />
+                </div>
+                <div class="payfont">
+                    <p>微信 扫码支付</p>
+                    <p class="payfont-t">使用微信手机客户端支付</p>
+                </div>
+                <div class="order-pay-dcode" id="J_weixin">
+                    <img class="loadinggif" src="~/Content/Pay/Img/loading_f9473568.gif" />
+                    <span class="arrow-left">
+                        <i></i>
+                    </span>
+                </div>
+            </div>
+            <div class="order-way-block payfor-jd" data-channel="jdpay" data-msg="">
+                <div class="payicon">
+                    <img src="~/Content/Pay/Img/jdpay_fd9afe79.jpg" />
+                </div>
+                <div class="payfont">
+                    <p>京东支付</p>
+                    <p class="payfont-t">使用京东支付支付</p>
+                </div>
+            </div>
+
+            <div class="order-otherpay">
+                <h3 class="paytext">请打开手机微信客户端扫描二维码</h3>
+                <div class="payend">
+                    <span id="J_applyend" class="niu-btn niu-btn-red niu-btn-middle goorder">已完成付款</span>
+                    <span id="J_problem" class="niu-btn niu-btn-gray niu-btn-middle goorder">付款遇到问题</span>
+                </div>
+            </div>
+    </div>
+
+</section>
+<!--<section class="shopping-address">-->
+<!-- -->
+<!--</section>-->
+<section class="order-pay bottom">
+    <div class="title">
+        <div class="title_meaasge">商品信息</div>
+        <div class="title_price">单价</div>
+        <div class="title_num">数量</div>
+        <div class="title_total">小计</div>
+    </div>
+    <div class="cartBox">
+        @foreach (OrderSC item in ViewBag.orderShop)
+        {
+            var xj = int.Parse(item.Price) * int.Parse(item.Count);
+            <ul class="cartItem">
+                <li class="cartItem-img">
+                    <img src="/Content/img/@item.IMG">
+                </li>
+
+                <li class="cartItem-name">
+                    <div class="cartItem-name-c">
+                        <p id="Alipay" typeName="@item.TypeName" proName="@item.ProName">@item.TypeName</p>
+                        <p class="subhead">@item.ProName</p>
+                    </div>
+                </li>
+
+                <li class="cartItem-price">
+                    <span id="price">@item.Price</span>元
+                </li>
+                <li class="cartItem-num">×@item.Count</li>
+                <li class="cartItem-totalprice"><span id="xj" postage="@item.Postage">@xj</span>元</li>
+            </ul>
+        }
+
+        <div class="cartBox-bottom">
+            <span class="order"> 订单单号：@Model.ExpressNumber</span>
+            <span class="num">共计 @Model.Quantity 件商品</span>
+            <span class="sum" id="hhj">商品合计：4298.00元</span>
+            <span class="address">
+
+                收货信息:@Model.AddressInfo
+            </span>
+            <span class="ship" id="yf">配送费用：238.00元</span>
+
+            <p class="bill">发票抬头:@Model.InvoiceName</p>
+
+            <p class="total" id="zj">费用总计：4536.00 元</p>
+        </div>
+    </div>
+</section>
+
+<section class="order-pay">
+    <div class="problem" id="problem" name="problem" style="display:block">
+        <h1>付款遇到问题了？先看看是不是由于下面的原因。</h1>
+        <dl>
+            <dt>问：是否可以货到付款？</dt>
+            <dd>答：目前暂不支持货到付款。</dd>
+            <dt>问：订单是否可以分开支付？</dt>
+            <dd>答：订单金额只能一次性支付，不能分开支付。</dd>
+            <dt>问：在线支付后，系统提示已经支付成功，订单显示未支付怎么办？</dt>
+            <dd>答：如确认已经支付成功并账户扣款，但订单状态没有变化，可能是支付平台数据没有及时同步到预订官网，请您稍后刷新页面查看订单状态，或及时联系客服处理。</dd>
+            <dt>问：官网购买手机支持哪些支付方式？</dt>
+            <dd>答：官网购买目前只支持在线支付，包括支付宝、微信支付</dd>
+            <dt>问：如何查询订单状态？</dt>
+            <dd>答：请您使用下单的账户登录niu.com官网，在个人中心中查看。</dd>
+            <dt>问：订单取消后退款什么时候到账？</dt>
+            <dd>答：退款周期约为 3-20 个工作日（支付宝为 3-10 个工作日；微信为 2-5 个工作日；银联为 7-20 个工作日；招行分期为 3-20 个工作日）。</dd>
+        </dl>
+    </div>
+</section>
+
+<div class="qrmask"></div>
+<div class="largeQrcode">
+    <div class="bigQrcodeContent">
+
+    </div>
+</div>
+
+
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#process3").css({ "height": "100px" });
+        $(".sp-content").css({ "margin-top": "80px" });
+        var hj = 0; //费用合计
+        var yf = 0; //运费
+        var zj = 0; //最终支付费用
+        var count = 0;
+        $("ul.cartItem").each(function () {
+            var $xj = $(this).find("#xj");
+            //count = parseInt($(this).find(".cartItem-num").text());
+            //count = parseInt(count) + parseInt($(this).find(".cartItem-num").attr("shopCount"));
+            hj = parseInt(hj) + parseInt($xj.text());
+            yf = parseInt(yf) + parseInt($xj.attr("postage"));
+        });
+        //购买商品 免运费
+        if (parseInt(hj) > 999) {
+            yf = 0;
+        };
+        zj = parseInt(hj) + parseInt(yf);
+        $("#hhj").text("商品合计：" + hj + "元");
+        $("#yf").text("配送费用：" + yf + "元");
+        $("#zj").text("费用总计：" + zj + "元");
+        $("#fyzj").text("费用总计："+zj+".00元");
+    });
+</script>

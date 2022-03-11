@@ -1,0 +1,208 @@
+﻿
+@{
+    ViewBag.Title = "ViewProduct";
+    Layout = "~/Areas/XiaoNiu/Views/Shared/_CommonPage.cshtml";
+}
+@using Shopping.Areas.XiaoNiu.Models;
+<link href="~/Content/Store/CSS/list.css" rel="stylesheet" />
+<link href="~/Content/Store/CSS/list-c6790a.css" rel="stylesheet" />
+<link href="~/Content/Store/CSS/productCard1_8611a340.css" rel="stylesheet" />
+<link href="~/Content/Store/CSS/productCard2_92d4a31b.css" rel="stylesheet" />
+<link href="~/Content/Store/CSS/productCard3_4e3ea62d.css" rel="stylesheet" />
+
+@*shopStore-kv-clone    shopStore-kv-active*@
+
+<section class="shopStore">
+    <div class="shopStore-kv">
+        <article class="shopStore-slider shopStore-kv-horizontal" style="overflow: hidden;">
+            <ul class="shopStore-kv-wrap shopStore-kv-carousel" style="width: 400%; margin-left: -100%; left: 0%;">
+                <li class="gridBox-link shopStore-kv-3" style="width: 25%;" aa="0" bb="shopStore-kv-active"></li>
+                <li class="gridBox-link shopStore-kv-2 " style="width: 25%;" aa="1" bb="shopStore-kv-active"></li>
+                <li class="gridBox-link shopStore-kv-3 " style="width: 25%;" aa="0" bb="shopStore-kv-active"></li>
+                <li class="gridBox-link shopStore-kv-2 " style="width: 25%;" aa="1" bb="shopStore-kv-active"></li>
+            </ul>
+        </article>
+        <nav class="shopStore-kv-nav">
+            <ol>
+                <li data-slide="0" class="shopStore-kv-active" id="one"></li>
+                <li data-slide="1" class="" id="two"></li>
+            </ol>
+        </nav>
+    </div>
+
+    <article class="shopStore-escooter">
+        <div class=" shopStore-escooter-title">
+            <p class="shopStore-escooter-title-b">小牛电动</p>
+            <p class="shopStore-escooter-title-m">E-Scooter</p>
+        </div>
+        <div class="shopStore-escooter-products">
+            <a href="/XiaoNiu/ShopDetail/Detail?id=1" target="_blank">
+                <div class="shopStore-escooter-products-m1">
+                    <div class="shopStore-escooter-products-img">
+                        <img src="~/Content/img/M1__e46436ce.jpg" />
+                    </div>
+                    <div class="shopStore-escooter-products-des">
+                        <span class="shopStore-escooter-products-des-name">小牛电动M1</span>
+                        <span class="shopStore-escooter-products-des-price">3299起</span>
+                        <ul class="shopStore-escooter-products-des-color">
+                            <li class="icon-circle white"></li>
+                            <li class="icon-circle yellow"></li>
+                            <li class="icon-circle red"></li>
+                            <li class="icon-circle blue"></li>
+                            <li class="icon-circle gray"></li>
+                        </ul>
+                    </div>
+                </div>
+            </a>
+
+            <a href="/XiaoNiu/ShopDetail/Detail?id=5" target="_blank">
+                <div class="shopStore-escooter-products-n1">
+                    <div class="shopStore-escooter-products-img">
+                        <img src="~/Content/img/N1_58c04fdf.jpg" />
+                    </div>
+                    <div class="shopStore-escooter-products-des">
+                        <span class="shopStore-escooter-products-des-name">小牛电动N1S</span>
+                        <span class="shopStore-escooter-products-des-price">4999起</span>
+                        <ul class="shopStore-escooter-products-des-color">
+                            <li class="icon-circle white"></li>
+                            <li class="icon-circle red"></li>
+                            <li class="icon-circle blue"></li>
+                            <li class="icon-circle gray"></li>
+                        </ul>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </article>
+
+    @*end: 电动车结束*@
+
+
+    <article class="shopStore-productList">
+
+        @*start:新品上架*@
+        <div class="shopStore-productList-content">
+            <div class="shopStore-productList-categoryTitle">
+                <span class="shopStore-productList-title1">新品上架</span><span class="shopStore-productList-title2">New Arrivals</span>
+            </div>
+            <div class="shopStore-productList-category">
+                @*start:一个商品*@
+                @foreach (XiaoNiuStore item in ViewBag.newProduct)
+                {
+                    var id = item.SID;
+                    var name = "";
+                    if (item.TypeName.Length > 18)
+                    {
+                        name = item.TypeName.Substring(0, 16) + "...";
+                    }
+                    else {
+                        name = item.TypeName;
+                    }
+                    <a href="@Url.Action("Detail","ShopDetail")?id=@id" target="_blank">
+                        <div class="widget-productCard1">
+                            <div class="widget-productCard1-img">
+                                <img src="~/Content/img/@item.IMG">   @*style=" width:526px;height:526px;>*@
+                            </div>
+                            <div class="widget-productCard1-des">
+                                <p class="widget-productCard1-desL">@name</p>
+                                <p class="widget-productCard1-desM">@item.Description </p>
+                                <span>￥@item.Price</span>
+                            </div>
+                        </div>
+                    </a>
+                }
+                @*end*@
+            </div>
+
+            <div class="shopStore-productList-categoryTitle">
+                <span class="shopStore-productList-title1">小牛周边</span><span class="shopStore-productList-title2">NIU Accessories</span>
+            </div>
+            <div class="shopStore-productList-category">
+                @foreach (XiaoNiuStore item in ViewBag.zhouBian)
+                {
+                    var id = item.SID;
+                    var name = "";
+                    if (item.TypeName.Length > 18)
+                    {
+                        name = item.TypeName.Substring(0, 16) + "...";
+                    }
+                    else
+                    {
+                        name = item.TypeName;
+                    }
+                    <a href="@Url.Action("Detail","ShopDetail")?id=@id" target="_blank">
+                        <div class="widget-productCard1">
+                            <div class="widget-productCard1-img">
+                                <img src="~/Content/img/@item.IMG">
+                            </div>
+                            <div class="widget-productCard1-des">
+                                <p class="widget-productCard1-desL">@name</p>
+                                <p class="widget-productCard1-desM">@item.Description </p>
+                                <span>￥@item.Price</span>
+                            </div>
+                        </div>
+                    </a>
+                }
+                @*end*@
+            </div>
+        </div>
+    </article>
+</section>
+
+
+
+
+<script>
+    var mm;
+    function hh() {
+        $("ul.shopStore-kv-carousel").animate({ "left": "-100%" }, 2000, function () {
+            $("ol li").attr("class", "");//把ol li 的样式移除
+            $one = $("ul.shopStore-kv-carousel li:eq(0)");//获取ul下的第一个li标签
+            $one.remove();//移除
+            var i = $("ul.shopStore-kv-carousel li:eq(0)").attr("aa");
+            //alert(i);
+            $("ol li:eq(" + parseInt(i) + ")").attr("class", "shopStore-kv-active");//切换图标的高亮显示
+            $("ul.shopStore-kv-carousel").css("left", "0%");//重新定位
+            $one.appendTo("ul.shopStore-kv-carousel");//把移除的li追加给ul
+        });
+        //setTimeout用于在指定的毫秒数后调用函数
+        mm = setTimeout("hh()", 4000);
+    }
+
+    $(document).ready(function () {
+        //第一种状态
+        var oneState = ' <li class="gridBox-link shopStore-kv-3" style="width: 25%;" aa="0" bb="shopStore-kv-active"></li>' +
+            '<li class="gridBox-link shopStore-kv-2 " style="width: 25%;" aa="1" bb="shopStore-kv-active"></li> ' +
+            ' <li class="gridBox-link shopStore-kv-3 " style="width: 25%;" aa="0" bb="shopStore-kv-active"></li>' +
+            '<li class="gridBox-link shopStore-kv-2 " style="width: 25%;" aa="1" bb="shopStore-kv-active"></li>';
+
+        //第二中状态
+        var twoState = '<li class="gridBox-link shopStore-kv-2 " style="width: 25%;" aa="1" bb="shopStore-kv-active"></li> ' +
+            ' <li class="gridBox-link shopStore-kv-3 " style="width: 25%;" aa="0" bb="shopStore-kv-active"></li>' +
+            '<li class="gridBox-link shopStore-kv-2 " style="width: 25%;" aa="1" bb="shopStore-kv-active"></li>' +
+            ' <li class="gridBox-link shopStore-kv-3" style="width: 25%;" aa="0" bb="shopStore-kv-active"></li>';
+
+        //setTimeout用于在指定的毫秒数后调用函数
+        mm = setTimeout("hh()", 4000);
+        $("#one").click(function () {
+            //去掉所有ol li的样式
+            $("ol li").attr("class", "");
+            $("ol li:eq(0)").attr("class", "shopStore-kv-active");//让被点中的图标高亮
+            clearTimeout(mm);//阻止计时器函数mm的执行
+            $(".shopStore-kv-carousel").html(oneState);//给ul设置HTML oneTsate
+            //启用定时器
+            mm = setTimeout("hh()", 2000);
+        });
+        $("#two").click(function () {
+            //去掉所有ol li的样式
+            $("ol li").attr("class", "");
+            $("ol li:eq(1)").attr("class", "shopStore-kv-active");//让被点中的图标高亮
+            clearTimeout(mm);//阻止计时器函数mm的执行
+            $(".shopStore-kv-carousel").html(twoState);//给ul设置HTML oneTsate
+            //启用定时器
+            mm = setTimeout("hh()", 2000);
+        });
+    })
+</script>
+
+

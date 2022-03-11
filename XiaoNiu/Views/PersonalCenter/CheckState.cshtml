@@ -1,0 +1,51 @@
+﻿@using Shopping.Models;
+
+@foreach (Order item in ViewBag.order)
+{
+    var name = item.AddressInfo.Split(',')[0];
+<div class="orderItem">
+    <div class="orderItem-status">
+        <span class="littleStatus">收货人:@name</span>
+        <span class="littleStatus">下单时间:@item.CreateTime</span>
+        @if (item.OrderState == "待付款")
+        {
+            <a class="active" id="payNow" state="">立即支付</a>
+        }
+
+    </div>
+    <div class="orderItem-original">
+        <span>原始单号:@item.ExpressNumber </span>
+        <span>下单时间:@item.CreateTime </span>
+
+    </div>
+
+    <div class="orderItem-title">
+        <ul>
+            <li>订单编号:@item.ExpressNumber </li>
+            <li>订单金额:@item.OrderMoney </li>
+            <li>订单状态:@item.OrderState </li>
+        </ul>
+    </div>
+    @foreach (OrderDeatil items in ViewBag.orderDetail)
+    {
+        if (item.OrderID == items.OrderID)
+        {
+            <div class="orderItem-product">
+                <ul>
+                    <li class="orderItem-product-img">
+                        <img src="/Content/img/@items.IMG">
+                    </li>
+                    <li class="orderItem-product-info">
+                        <p class="orderItem-product-info-name" id="haha" typename="@items.TypeName" proname="@items.ProperName">@items.TypeName @items.ProperName</p>
+                    </li>
+                    <li class="orderItem-product-qty">@items.Quantity</li>
+                    <li class="orderItem-product-price"><span>@items.Price</span>元</li>
+                    <li class="orderItem-product-option">
+                        <a href="/XiaoNiu/PersonalCenter/OrderDetail?id=@item.OrderID">订单详情</a>
+                    </li>
+                </ul>
+            </div>
+        }
+    }
+</div>
+}

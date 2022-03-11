@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewBag.Title = "OrderDetail";
+    Layout = "~/Areas/XiaoNiu/Views/Shared/_CommonPage.cshtml";
+}
+@model Shopping.Models.Order
+<link href="~/Content/PersonalCenter/OrderDetail/css/detail_order_6404bd3c.css" rel="stylesheet" />
+<link href="~/Content/PersonalCenter/OrderDetail/css/transferInvoice_3d5940b6.css" rel="stylesheet" />
+<link href="~/Content/PersonalCenter/OrderDetail/css/usertip_04c7f319.css" rel="stylesheet" />
+
+<section class="detailOrder">
+    <div class="userPanel">
+        <div class="usertip active1">
+            <div class="head">
+                <img class="myHead" src="~/Content/img/Zayn.jpg" alt="">
+            </div>
+
+            <a class="active1" href="@Url.Action("MyOrder","PersonalCenter")">我的订单</a>
+            <a class="active4" href="/XiaoNiu/PersonalCenter/ModifyPWD" id="changePwd">修改密码</a>
+
+        </div>
+
+    </div>
+
+    <div class="order-content">
+        <h1 class="order-content-title">订单详情</h1>
+        <div class="order-content-pills">
+            <span class="order-content-pills-orderNum">订单编号:@Model.ExpressNumber </span>
+            <span class="order-content-pills-orderDate">下单时间:@Model.CreateTime </span>
+            <span class="order-content-pills-orderStatus">订单状态:@Model.OrderState </span>
+        </div>
+
+        <div class="order-content-express">
+
+
+        </div>
+
+
+        <h1 class="order-content-title">订单信息</h1>
+        <div class="order-content-detail">
+            <h5 class="order-content-detail-miniTitle">收货人信息</h5>
+            <div class="order-content-detail-article">
+                <p>收  货 人：@Model.AddressInfo.Split(',')[0]</p>
+                <p>收货地址：@Model.AddressInfo.Split(',')[1].Split(':')[0]</p>
+                <p>手机号码：@Model.AddressInfo.Split(':')[1]</p>
+            </div>
+            <h5 class="order-content-detail-miniTitle">支付方式及物流</h5>
+            <div class="order-content-detail-article">
+                @if (Model.OrderState == "待付款"|| Model.OrderState == "超时关闭")
+                {
+                    <p>支付方式：未支付</p>
+                }
+                else
+                {
+                    <p>支付方式：支付宝支付</p>
+                    <p>支付方式：微信支付</p>
+                    <p>支付方式：银联支付</p>
+                }
+                <p>配送方式：不限送货时间</p>
+            </div>
+            <h5 class="order-content-detail-miniTitle">发票信息</h5>
+            <div class="order-content-detail-article">
+                <p>发票类型：@Model.InvoiceType</p>
+                <p>抬头类型：@Model.InvoiceType.Split('-')[1]</p>
+                <p>发票抬头：@Model.InvoiceName</p>
+                @if (Model.OrderState == "待付款")
+                {
+                    <p>发票状态：待开票</p>
+                }
+                else
+                { 
+                    <p>发票状态：已开票</p>
+                }
+
+            </div>
+
+
+            <h5 class="order-content-detail-miniTitle">商品清单</h5>
+            <div class="order-content-detail-article">
+                @foreach (Shopping.Models.OrderDeatil item in ViewBag.orderdetail)
+                {
+                    <ul class="productItem">
+                        <li class="productItem-img">
+                            <img src="/Content/img/@item.IMG">
+                        </li>
+                        <li class="productItem-name">@item.TypeName  @item.ProperName</li>
+                        <li>@item.Quantity</li>
+                        <li>@item.Price</li>
+                        <li>@item.TotalMoney</li>
+                    </ul>
+                }
+            </div>
+
+
+        </div>
+
+
+    </div>
+</section>
+
